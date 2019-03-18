@@ -105,3 +105,17 @@ we've done up to this point. That's normal. After all, we haven't even created a
 
 The upside to Django's approach is that it is incredibly easy to customize any piece of our website. The downside is that Django requires a bit more out-of-the-box code than some competing web frameworks. As you become more and more experienced in web development,the wisdom of Django's approach will ring true.
 Currently emails are outputed to our command line console, they are not actually sent to users. Let's change that! First we need to sign up for an account at SendGrid and then update our setting.py files.Django will take care of the rest.Ready?
+
+
+# Chapter13: Newspaper app
+It's time to build our newspaper app. We'll have an articles page where journalists can post articles, set up permissions so only the author of an article can edit or delete it, and finally add the ability for other users to write comments on each article which will introduce the concept of foreign keys.
+# Articles to
+To start create an articles app and define our database models. There are no hard and fast rules around what to name your apps except that you can't use the name of a built-in app.If you look at the INSTALLED_APPS section of settings.py you can see which app names are off-limits:admin, auth, contenttypes , messages,and staticfiles.A general rule of thumb is to use the plural of an app name- posts,payments,users,etc-.unless doing so is obviously wrong as in the common case of blog where the singular makes more sense.
+
+Next up we define our database model which contains four fields:title,body.date,and author .Note that we're letting Django automatically set the time and date based on our TIME_ZONE setting.For the author field we want to reference our custom user model 'user.CustomUser' which we set in the settings.py file as AUTH_USER_MODEL.
+
+We can do this via get_user_model. And we also implement the best practices of defining get_absolute_url from the biginning and a __str__ method for viewing the model in our admin interface.
+
+
+# Edit/Delete
+How do we add edit and delete options ? We need new urls ,views,and templates.Let's start with the urls. We can take aadvantage of the fact that Django automatically adds a primary key to each database.Therefore our first article with a primary key of will be at articles/1/edit and the delete route will be at articles/1/delete/
